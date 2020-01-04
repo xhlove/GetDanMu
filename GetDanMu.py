@@ -3,7 +3,7 @@
 '''
 # 作者: weimo
 # 创建日期: 2020-01-04 12:59:11
-# 上次编辑时间       : 2020-01-04 17:41:34
+# 上次编辑时间       : 2020-01-04 20:14:39
 # 一个人的命运啊,当然要靠自我奋斗,但是...
 '''
 
@@ -40,7 +40,7 @@ def main():
     parser.add_argument("-u", "--url", default="", help="下载视频链接所指向视频的弹幕")
     parser.add_argument("-y", "--y", action="store_true", help="覆盖原有弹幕而不提示")
     args = parser.parse_args()
-    print(args.__dict__)
+    # print(args.__dict__)
     font_path, font_style_name = check_font(args.font)
     ass_head = get_ass_head(font_style_name, args.font_size)
     if args.site == "qq":
@@ -56,6 +56,5 @@ def main():
         write_lines_to_file(ass_head, subtitle.lines, file_path)
 
 if __name__ == "__main__":
-    # 打包 --> pyinstaller -F .\qq.py -c -n GetDanMu_qq_1.1
+    # 打包 --> pyinstaller GetDanMu.spec
     main()
-    # subtitle = ASS()
