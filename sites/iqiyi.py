@@ -1,9 +1,9 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3.7
 # coding=utf-8
 '''
 # 作者: weimo
-# 创建日期: 2019-12-18 09:48:36
-# 上次编辑时间       : 2020-01-04 17:54:46
+# 创建日期: 2020-01-04 19:14:41
+# 上次编辑时间: 2020-01-05 14:45:17
 # 一个人的命运啊,当然要靠自我奋斗,但是...
 '''
 
@@ -15,23 +15,9 @@ from xmltodict import parse
 
 from basic.vars import iqiyiplayer
 from basic.ass import check_content
-from pfunc.dump_to_ass import check_file
-from pfunc.request_info import get_vinfos
+from pfunc.dump_to_ass import check_file, write_one_video_subtitles
+from pfunc.request_info import get_vinfos, get_vinfos_by_url, get_vinfo_by_tvid
 
-
-def get_vinfo_by_tvid(tvid):
-    api_url = "https://pcw-api.iqiyi.com/video/video/baseinfo/{}".format(tvid)
-    try:
-        r = requests.get(api_url, headers=iqiyiplayer).content.decode("utf-8")
-    except Exception as e:
-        print("error info -->", e)
-        return
-    data = json.loads(r)["data"]
-    if data.__class__ != dict:
-        return None
-    name = data["name"]
-    duration = data["durationSec"]
-    return [name + "_" + str(duration), duration, tvid]
 
 def get_danmu_by_tvid(name, duration, tvid):
     # http://cmts.iqiyi.com/bullet/41/00/10793494100_300_3.z
@@ -50,7 +36,11 @@ def get_danmu_by_tvid(name, duration, tvid):
         except Exception as e:
             print("error info -->", e)
             continue
-        raw_xml = decompress(bytearray(r), 15+32).decode('utf-8')
+        try:
+            raw_xml = decompress(bytearray(r), 15+32).decode('utf-8')
+        except Exception as e:
+            index += 1
+            continue
         try:
             entry = parse(raw_xml)["danmu"]["data"]["entry"]
         except Exception as e:
@@ -62,6 +52,8 @@ def get_danmu_by_tvid(name, duration, tvid):
         if entry.__class__ != list:
             entry = [entry]
         for comment in entry:
+            if comment.get("list") is None:
+                continue
             bulletInfo = comment["list"]["bulletInfo"]
             if bulletInfo.__class__ != list:
                 bulletInfo = [bulletInfo]
@@ -89,10 +81,12 @@ def main(args):
         vi = get_vinfos(args.aid)
         if vi:
             vinfos += vi
-    # if args.url:
-    #     vi = get_vinfos_by_url(args.url)
-    #     if vi:
-    #         vinfos += vi
+    if args.tvid == "" and args.aid == "" and args.url == "":
+        args.url = input("请输入iqiyi链接：\n")
+    if args.url:
+        vi = get_vinfos_by_url(args.url)
+        if vi:
+            vinfos += vi
     subtitles = {}
     for name, duration, tvid in vinfos:
         print(name, "开始下载...")
@@ -101,5 +95,6 @@ def main(args):
             print("跳过{}".format(name))
             return
         comments = get_danmu_by_tvid(name, duration, tvid)
+        write_one_video_subtitles(file_path, comments, args)
         subtitles.update({file_path:comments})
     return subtitles

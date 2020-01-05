@@ -1,9 +1,9 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3.7
 # coding=utf-8
 '''
 # 作者: weimo
-# 创建日期: 2019-12-18 09:37:15
-# 上次编辑时间       : 2020-01-04 17:53:28
+# 创建日期: 2020-01-04 19:14:37
+# 上次编辑时间: 2020-01-05 14:47:36
 # 一个人的命运啊,当然要靠自我奋斗,但是...
 '''
 
@@ -14,7 +14,7 @@ import requests
 
 from basic.vars import qqlive
 from basic.ass import check_content
-from pfunc.dump_to_ass import check_file
+from pfunc.dump_to_ass import check_file, write_one_video_subtitles
 from pfunc.request_info import get_all_vids_by_cid as get_vids
 from pfunc.request_info import get_danmu_target_id_by_vid as get_target_id
 
@@ -158,6 +158,7 @@ def main(args):
     subtitles = {}
     for vinfo in vinfos:
         comments, file_path = get_one_subtitle_by_vinfo(vinfo, args.font, args.font_size, args.y)
+        write_one_video_subtitles(file_path, comments, args)
         subtitles.update({file_path:comments})
     return subtitles
 
