@@ -3,7 +3,7 @@
 '''
 # 作者: weimo
 # 创建日期: 2020-01-04 19:14:37
-# 上次编辑时间: 2020-01-05 14:47:36
+# 上次编辑时间       : 2020-01-11 17:25:34
 # 一个人的命运啊,当然要靠自我奋斗,但是...
 '''
 
@@ -13,7 +13,6 @@ import json
 import requests
 
 from basic.vars import qqlive
-from basic.ass import check_content
 from pfunc.dump_to_ass import check_file, write_one_video_subtitles
 from pfunc.request_info import get_all_vids_by_cid as get_vids
 from pfunc.request_info import get_danmu_target_id_by_vid as get_target_id
@@ -80,13 +79,7 @@ def get_danmu_by_target_id(vid: str, duration: int, target_id, font="微软雅�
             # timestamp不变 再试一次
             continue
         danmu_count = danmu["count"]
-        contents = []
         for comment in danmu["comments"]:
-            content = check_content(comment["content"], contents)
-            if content is None:
-                continue
-            else:
-                contents.append(content)
             if comment["content_style"]:
                 style = json.loads(comment["content_style"])
                 if style.get("gradient_colors"):
@@ -97,7 +90,7 @@ def get_danmu_by_target_id(vid: str, duration: int, target_id, font="微软雅�
                     color = ["ffffff"]
             else:
                 color = ["ffffff"]
-            comments.append([content, color, comment["timepoint"]])
+            comments.append([comment["content"], color, comment["timepoint"]])
         print("已下载{:.2f}%".format(params["timestamp"]*100/duration))
         params["timestamp"] += 30
     comments = sorted(comments, key=lambda _: _[-1])
@@ -157,8 +150,11 @@ def main(args):
     vinfos = get_video_info_by_vid(vids)
     subtitles = {}
     for vinfo in vinfos:
-        comments, file_path = get_one_subtitle_by_vinfo(vinfo, args.font, args.font_size, args.y)
-        write_one_video_subtitles(file_path, comments, args)
+        infos = get_one_subtitle_by_vinfo(vinfo, args.font, args.font_size, args.y)
+        if infos is None:
+            continue
+        comments, file_path = infos
+        comments = write_one_video_subtitles(file_path, comments, args)
         subtitles.update({file_path:comments})
     return subtitles
 

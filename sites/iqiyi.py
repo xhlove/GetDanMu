@@ -3,7 +3,7 @@
 '''
 # 作者: weimo
 # 创建日期: 2020-01-04 19:14:41
-# 上次编辑时间: 2020-01-05 14:45:17
+# 上次编辑时间       : 2020-01-11 17:23:32
 # 一个人的命运啊,当然要靠自我奋斗,但是...
 '''
 
@@ -14,7 +14,6 @@ from zlib import decompress
 from xmltodict import parse
 
 from basic.vars import iqiyiplayer
-from basic.ass import check_content
 from pfunc.dump_to_ass import check_file, write_one_video_subtitles
 from pfunc.request_info import get_vinfos, get_vinfos_by_url, get_vinfo_by_tvid
 
@@ -48,7 +47,6 @@ def get_danmu_by_tvid(name, duration, tvid):
             continue
         # with open("raw_xml.json", "w", encoding="utf-8") as f:
         #     f.write(json.dumps(parse(raw_xml), ensure_ascii=False, indent=4))
-        contents = []
         if entry.__class__ != list:
             entry = [entry]
         for comment in entry:
@@ -58,13 +56,8 @@ def get_danmu_by_tvid(name, duration, tvid):
             if bulletInfo.__class__ != list:
                 bulletInfo = [bulletInfo]
             for info in bulletInfo:
-                content = check_content(info["content"], contents)
-                if content is None:
-                    continue
-                else:
-                    contents.append(content)
                 color = [info["color"]]
-                comments.append([content, color, int(comment["int"])])
+                comments.append([info["content"], color, int(comment["int"])])
         print("已下载{:.2f}%".format(index * timestamp * 100 / duration))
         index += 1
     comments = sorted(comments, key=lambda _: _[-1])
@@ -93,8 +86,8 @@ def main(args):
         flag, file_path = check_file(name, skip=args.y)
         if flag is False:
             print("跳过{}".format(name))
-            return
+            continue
         comments = get_danmu_by_tvid(name, duration, tvid)
-        write_one_video_subtitles(file_path, comments, args)
+        comments = write_one_video_subtitles(file_path, comments, args)
         subtitles.update({file_path:comments})
     return subtitles

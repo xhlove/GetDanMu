@@ -1,6 +1,7 @@
 # 额外
 .vscode/
 releases/
+test/
 *.ass
 methods/calc_danmu_pos.py
 

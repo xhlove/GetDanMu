@@ -3,11 +3,24 @@
 '''
 # 作者: weimo
 # 创建日期: 2020-01-05 12:45:18
-# 上次编辑时间: 2020-01-05 14:44:42
+# 上次编辑时间       : 2020-01-11 17:37:22
 # 一个人的命运啊,当然要靠自我奋斗,但是...
 '''
+
+import hashlib
 from urllib.parse import urlparse
 
+def remove_same_danmu(comments: list):
+    # 在原有基础上pop会引起索引变化 所以还是采用下面这个方式
+    contents = []
+    for comment in comments:
+        content, color, timepoint = comment
+        content = content.replace(" ", "")
+        if content in contents:
+            continue
+        else:
+            contents.append([content, color, timepoint])
+    return contents
 
 def check_url_site(url):
     return urlparse(url).netloc.split(".")[-2]
@@ -22,3 +35,10 @@ def check_url_locale(url):
         return flag["tw"]
     else:
         return flag["cn"] 
+
+def yk_msg_sign(msg: str):
+    return hashlib.new("md5", bytes(msg + "MkmC9SoIw6xCkSKHhJ7b5D2r51kBiREr", "utf-8")).hexdigest()
+
+def yk_t_sign(token, t, appkey, data):
+    text = "&".join([token, t, appkey, data])
+    return hashlib.new('md5', bytes(text, 'utf-8')).hexdigest()

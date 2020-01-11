@@ -3,7 +3,7 @@
 '''
 # 作者: weimo
 # 创建日期: 2020-01-04 19:14:43
-# 上次编辑时间: 2020-01-05 14:47:16
+# 上次编辑时间       : 2020-01-11 17:42:30
 # 一个人的命运啊,当然要靠自我奋斗,但是...
 '''
 import re
@@ -193,3 +193,63 @@ def get_vinfos_by_url(url):
             return get_vinfos(aid, locale=locale)
 
 #-------------------------------------------iqiyi--------------------------------------------
+
+#-------------------------------------------youku--------------------------------------------
+
+def get_vinfos_by_url_youku(url, isall=False):
+    vid_patterns = ["[\s\S]+?youku.com/video/id_(/+?)\.html", "[\s\S]+?youku.com/v_show/id_(.+?)\.html"]
+    video_id = matchit(vid_patterns, url)
+    show_id_patterns = ["[\s\S]+?youku.com/v_nextstage/id_(/+?)\.html", "[\s\S]+?youku.com/show/id_z(.+?)\.html", "[\s\S]+?youku.com/show_page/id_z(.+?)\.html", "[\s\S]+?youku.com/alipay_video/id_(.+?)\.html"]
+    show_id = matchit(show_id_patterns, url)
+    if video_id is None and show_id is None:
+        return None
+    if video_id:
+        return get_vinfos_by_video_id(video_id, isall=isall)
+    if show_id.__len__() == 20 and show_id == show_id.lower():
+        return get_vinfos_by_show_id(show_id)
+    else:
+        return get_vinfos_by_video_id(show_id, isall=isall)
+
+def get_vinfos_by_video_id(video_id, isall=False):
+    api_url = "https://openapi.youku.com/v2/videos/show.json?client_id=53e6cc67237fc59a&package=com.huawei.hwvplayer.youku&ext=show&video_id={}".format(video_id)
+    try:
+        r = requests.get(api_url, headers=chrome, timeout=5).content.decode("utf-8")
+    except Exception as e:
+        print("get_vinfos_by_video_id error info -->", e)
+        return None
+    data = json.loads(r)
+    if isall:
+        show_id = data["show"]["id"]
+        return get_vinfos_by_show_id(show_id)
+    duration = 0
+    if data.get("duration"):
+        duration = int(float(data["duration"]))
+    if data.get("title"):
+        name = data["title"] + "_" + str(duration)
+    else:
+        name = "优酷未知" + "_" + str(duration)
+    vinfo = [name, duration, video_id]
+    return [vinfo]
+
+def get_vinfos_by_show_id(show_id):
+    api_url = "https://openapi.youku.com/v2/shows/videos.json?show_videotype=正片&count=100&client_id=53e6cc67237fc59a&page=1&show_id={}&package=com.huawei.hwvplayer.youku".format(show_id)
+    try:
+        r = requests.get(api_url, headers=chrome, timeout=5).content.decode("utf-8")
+    except Exception as e:
+        print("get_vinfos_by_show_id error info -->", e)
+        return None
+    data = json.loads(r)["videos"]
+    if data.__len__() == 0:
+        return None
+    vinfos = []
+    for video in data:
+        duration = 0
+        if video.get("duration"):
+            duration = int(float(video["duration"]))
+        if video.get("title"):
+            name = video["title"] + "_" + str(duration)
+        else:
+            name = "优酷未知_{}".format(video["id"]) + "_" + str(duration)
+        vinfos.append([name, duration, video["id"]])
+    return vinfos
+#-------------------------------------------youku--------------------------------------------

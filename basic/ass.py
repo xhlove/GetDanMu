@@ -3,7 +3,7 @@
 '''
 # 作者: weimo
 # 创建日期: 2020-01-04 19:14:46
-# 上次编辑时间: 2020-01-05 14:45:55
+# 上次编辑时间       : 2020-01-11 17:20:21
 # 一个人的命运啊,当然要靠自我奋斗,但是...
 '''
 
@@ -63,9 +63,3 @@ def check_font(font):
     else:
         pass
     return font_path, font_style_name
-
-def check_content(content: str, comments: list):
-    content = content.replace(" ", "")
-    if content in comments:
-        return
-    return content

@@ -3,7 +3,7 @@
 '''
 # 作者: weimo
 # 创建日期: 2020-01-04 19:14:39
-# 上次编辑时间: 2020-01-05 14:47:53
+# 上次编辑时间       : 2020-01-11 17:49:40
 # 一个人的命运啊,当然要靠自我奋斗,但是...
 '''
 
@@ -13,6 +13,7 @@ from argparse import ArgumentParser
 
 from sites.qq import main as qq
 from sites.iqiyi import main as iqiyi
+from sites.youku import main as youku
 from pfunc.cfunc import check_url_site
 
 # -------------------------------------------
@@ -34,8 +35,9 @@ def main():
     parser.add_argument("-vid", "--vid", default="", help="下载vid对应视频的弹幕，支持同时多个vid，需要用逗号隔开")
     parser.add_argument("-aid", "--aid", default="", help="下载aid对应视频的弹幕（爱奇艺合集）")
     parser.add_argument("-tvid", "--tvid", default="", help="下载tvid对应视频的弹幕，支持同时多个tvid，需要用逗号隔开")
+    parser.add_argument("-series", "--series", action="store_true", help="尝试通过单集得到合集的全部弹幕")
     parser.add_argument("-u", "--url", default="", help="下载视频链接所指向视频的弹幕")
-    parser.add_argument("-y", "--y", action="store_true", help="覆盖原有弹幕而不提示")
+    parser.add_argument("-y", "--y", action="store_false", help="默认覆盖原有弹幕而不提示")
     args = parser.parse_args()
     # print(args.__dict__)
     if args.url != "":
@@ -46,6 +48,8 @@ def main():
         subtitles = qq(args)
     if args.site == "iqiyi":
         subtitles = iqiyi(args)
+    if args.site == "youku":
+        subtitles = youku(args)
 
 if __name__ == "__main__":
     # 打包 --> pyinstaller GetDanMu.spec
