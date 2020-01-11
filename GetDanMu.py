@@ -3,7 +3,7 @@
 '''
 # 作者: weimo
 # 创建日期: 2020-01-04 19:14:39
-# 上次编辑时间       : 2020-01-11 17:49:40
+# 上次编辑时间       : 2020-01-11 18:40:49
 # 一个人的命运啊,当然要靠自我奋斗,但是...
 '''
 
@@ -27,7 +27,7 @@ from pfunc.cfunc import check_url_site
 
 
 def main():
-    parser = ArgumentParser(description="视频网站弹幕转换/下载工具，任何问题请联系vvtoolbox.dev@gmail.com")
+    parser = ArgumentParser(description="视频网站弹幕转换/下载工具，项目地址https://github.com/xhlove/GetDanMu，任何问题请联系vvtoolbox.dev@gmail.com")
     parser.add_argument("-f", "--font", default="微软雅黑", help="指定输出字幕字体")
     parser.add_argument("-fs", "--font-size", default=28, help="指定输出字幕字体大小")
     parser.add_argument("-s", "--site", default="", help="指定网站")
