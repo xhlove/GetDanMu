@@ -3,7 +3,7 @@
 '''
 # 作者: weimo
 # 创建日期: 2020-01-04 19:14:39
-# 上次编辑时间       : 2020-01-11 18:40:49
+# 上次编辑时间       : 2020-01-16 19:24:10
 # 一个人的命运啊,当然要靠自我奋斗,但是...
 '''
 
@@ -14,6 +14,7 @@ from argparse import ArgumentParser
 from sites.qq import main as qq
 from sites.iqiyi import main as iqiyi
 from sites.youku import main as youku
+from sites.sohu import main as sohu
 from pfunc.cfunc import check_url_site
 
 # -------------------------------------------
@@ -37,19 +38,36 @@ def main():
     parser.add_argument("-tvid", "--tvid", default="", help="下载tvid对应视频的弹幕，支持同时多个tvid，需要用逗号隔开")
     parser.add_argument("-series", "--series", action="store_true", help="尝试通过单集得到合集的全部弹幕")
     parser.add_argument("-u", "--url", default="", help="下载视频链接所指向视频的弹幕")
-    parser.add_argument("-y", "--y", action="store_false", help="默认覆盖原有弹幕而不提示")
+    parser.add_argument("-y", "--y", action="store_true", help="默认覆盖原有弹幕而不提示")
     args = parser.parse_args()
     # print(args.__dict__)
+    init_args = sys.argv
+    imode = "command_line"
+    if init_args.__len__() == 1:
+        # 双击运行或命令执行exe文件时 传入参数只有exe的路径 
+        # 命令行下执行会传入exe的相对路径（在exe所在路径执行时） 传入完整路径（非exe所在路径下执行）
+        # 双击运行exe传入完整路径
+        imode == "non_command_line"
+    if imode == "non_command_line":
+        content = input("请输入链接：\n")
+        check_tip = check_url_site(content)
+        if check_tip is None:
+            sys.exit("不支持的网站")
+        args.url = content
+        args.site = check_tip
+    # 要么有url 要么有site和相关参数的组合
     if args.url != "":
         args.site = check_url_site(args.url)
-    if args.site == "":
-        args.site = input("请输入站点（qq/iqiyi/youku）：\n")
+    elif args.site == "":
+        sys.exit("请传入链接或指定网站+视频相关的参数")
     if args.site == "qq":
         subtitles = qq(args)
     if args.site == "iqiyi":
         subtitles = iqiyi(args)
     if args.site == "youku":
         subtitles = youku(args)
+    if args.site == "sohu":
+        subtitles = sohu(args)
 
 if __name__ == "__main__":
     # 打包 --> pyinstaller GetDanMu.spec

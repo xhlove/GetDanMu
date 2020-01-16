@@ -3,7 +3,7 @@
 '''
 # 作者: weimo
 # 创建日期: 2020-01-05 14:52:21
-# 上次编辑时间       : 2020-01-11 17:53:14
+# 上次编辑时间       : 2020-01-16 19:59:08
 # 一个人的命运啊,当然要靠自我奋斗,但是...
 '''
 import re
@@ -119,7 +119,7 @@ def main(args):
     subtitles = {}
     for name, duration, video_id in vinfos:
         print(name, "开始下载...")
-        flag, file_path = check_file(name, skip=args.y)
+        flag, file_path = check_file(name, args=args)
         if flag is False:
             print("跳过{}".format(name))
             continue

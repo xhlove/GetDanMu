@@ -3,7 +3,7 @@
 '''
 # 作者: weimo
 # 创建日期: 2020-01-04 19:14:43
-# 上次编辑时间       : 2020-01-11 17:42:30
+# 上次编辑时间       : 2020-01-16 19:44:55
 # 一个人的命运啊,当然要靠自我奋斗,但是...
 '''
 import re
@@ -39,6 +39,28 @@ def get_all_vids_by_column_id():
     # https://s.video.qq.com/get_playsource?id=85603&plat=2&type=4&data_type=3&video_type=10&year=2019&month=&plname=qq&otype=json
     # 综艺类型的
     pass
+
+def get_cid_by_vid(vid):
+    api_url = "http://union.video.qq.com/fcgi-bin/data"
+    params = {
+        "tid": "98",
+        "appid": "10001005",
+        "appkey": "0d1a9ddd94de871b",
+        "idlist": vid,
+        "otype":"json"
+    }
+    r = requests.get(api_url, params=params, headers=qqlive).content.decode("utf-8")
+    data = json.loads(r.lstrip("QZOutputJson=").rstrip(";"))
+    try:
+        cid = data["results"][0]["fields"]
+    except Exception as e:
+        print("load fields error info -->", e)
+        return None
+    if cid.get("sync_cover"):
+        return cid["sync_cover"]
+    elif cid.get("cover_list"):
+        return cid["cover_list"][0]
+    return
 
 def get_all_vids_by_cid(cid):
     api_url = "http://union.video.qq.com/fcgi-bin/data"

@@ -3,12 +3,14 @@
 '''
 # 作者: weimo
 # 创建日期: 2020-01-05 12:45:18
-# 上次编辑时间       : 2020-01-11 17:37:22
+# 上次编辑时间       : 2020-01-16 14:50:34
 # 一个人的命运啊,当然要靠自我奋斗,但是...
 '''
 
 import hashlib
 from urllib.parse import urlparse
+
+from basic.vars import ALLOW_SITES
 
 def remove_same_danmu(comments: list):
     # 在原有基础上pop会引起索引变化 所以还是采用下面这个方式
@@ -23,7 +25,11 @@ def remove_same_danmu(comments: list):
     return contents
 
 def check_url_site(url):
-    return urlparse(url).netloc.split(".")[-2]
+    site = urlparse(url).netloc.split(".")[-2]
+    if site in ALLOW_SITES:
+        return site
+    else:
+        return None
 
 def check_url_locale(url):
     flag = {

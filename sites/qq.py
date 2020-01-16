@@ -3,7 +3,7 @@
 '''
 # 作者: weimo
 # 创建日期: 2020-01-04 19:14:37
-# 上次编辑时间       : 2020-01-11 17:25:34
+# 上次编辑时间       : 2020-01-16 20:04:51
 # 一个人的命运啊,当然要靠自我奋斗,但是...
 '''
 
@@ -14,6 +14,7 @@ import requests
 
 from basic.vars import qqlive
 from pfunc.dump_to_ass import check_file, write_one_video_subtitles
+from pfunc.request_info import get_cid_by_vid
 from pfunc.request_info import get_all_vids_by_cid as get_vids
 from pfunc.request_info import get_danmu_target_id_by_vid as get_target_id
 
@@ -97,10 +98,10 @@ def get_danmu_by_target_id(vid: str, duration: int, target_id, font="微软雅�
     return comments
 
     
-def get_one_subtitle_by_vinfo(vinfo, font="微软雅黑", font_size=25, skip=False):
+def get_one_subtitle_by_vinfo(vinfo, font="微软雅黑", font_size=25, args=""):
     vid, name, duration, target_id = vinfo
     print(name, "开始下载...")
-    flag, file_path = check_file(name, skip=skip)
+    flag, file_path = check_file(name, args)
     if flag is False:
         print("跳过{}".format(name))
         return
@@ -108,7 +109,7 @@ def get_one_subtitle_by_vinfo(vinfo, font="微软雅黑", font_size=25, skip=Fal
     # print("{}弹幕下载完成！".format(name))
     return comments, file_path
 
-def ask_input(url=""):
+def ask_input(url="", isall=False):
     if url == "":
         url = input("请输入vid/coverid/链接，输入q退出：\n").strip()
     if url == "q" or url == "":
@@ -117,6 +118,9 @@ def ask_input(url=""):
     params = url.replace(".html", "").split("/")
     if params[-1].__len__() == 11:
         vids = [params[-1]]
+        if isall:
+            cid = get_cid_by_vid(params[-1])
+            vids += get_vids(cid)
     elif params[-1].__len__() == 15:
         cid = params[-1]
         vids = get_vids(cid)
@@ -132,6 +136,9 @@ def ask_input(url=""):
 
 def main(args):
     vids = []
+    isall = False
+    if args.series:
+        isall = True
     if args.cid and args.cid.__len__() == 15:
         vids += get_vids(args.cid)
     if args.vid:
@@ -141,16 +148,26 @@ def main(args):
             vids += [vid for vid in args.vid.strip().replace(" ", "").split(",") if vid.__len__() == 11]
         else:
             pass
+        if args.series:
+            cid = get_cid_by_vid(args.vid)
+            vids += get_vids(cid)
     if args.url:
-        vids += ask_input(url=args.url)
+        vids += ask_input(url=args.url, isall=isall)
     if args.vid == "" and args.cid == "" and args.url == "":
-        vids += ask_input()
+        vids += ask_input(isall=isall)
     if vids.__len__() <= 0:
         sys.exit("没有任何有效输入")
+    vids_bak = vids
+    vids = []
+    for vid in vids_bak:
+        if vid in vids:
+            continue
+        else:
+            vids.append(vid)
     vinfos = get_video_info_by_vid(vids)
     subtitles = {}
     for vinfo in vinfos:
-        infos = get_one_subtitle_by_vinfo(vinfo, args.font, args.font_size, args.y)
+        infos = get_one_subtitle_by_vinfo(vinfo, args.font, args.font_size, args=args)
         if infos is None:
             continue
         comments, file_path = infos
