@@ -3,7 +3,7 @@
 '''
 # 作者: weimo
 # 创建日期: 2020-01-04 19:14:39
-# 上次编辑时间       : 2020-01-16 19:24:10
+# 上次编辑时间       : 2020-01-16 20:15:52
 # 一个人的命运啊,当然要靠自我奋斗,但是...
 '''
 
@@ -47,7 +47,7 @@ def main():
         # 双击运行或命令执行exe文件时 传入参数只有exe的路径 
         # 命令行下执行会传入exe的相对路径（在exe所在路径执行时） 传入完整路径（非exe所在路径下执行）
         # 双击运行exe传入完整路径
-        imode == "non_command_line"
+        imode = "non_command_line"
     if imode == "non_command_line":
         content = input("请输入链接：\n")
         check_tip = check_url_site(content)
