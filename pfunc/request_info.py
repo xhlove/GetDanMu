@@ -3,7 +3,7 @@
 '''
 # 作者: weimo
 # 创建日期: 2020-01-04 19:14:43
-# 上次编辑时间       : 2020-01-16 19:44:55
+# 上次编辑时间       : 2020-01-21 12:36:47
 # 一个人的命运啊,当然要靠自我奋斗,但是...
 '''
 import re
@@ -148,7 +148,7 @@ def get_vinfo_by_tvid(tvid, locale="zh_cn"):
         return None
     name = data["name"]
     duration = data["durationSec"]
-    return [name + "_" + str(duration), duration, tvid]
+    return [[name + "_" + str(duration), duration, tvid]]
 
 def get_vinfos_by_year(aid, years: list, cid=6, locale="zh_cn"):
     api_url = "https://pcw-api.iqiyi.com/album/source/svlistinfo?cid={}&sourceid={}&timelist={}".format(cid, aid, ",".join([str(_) for _ in years.copy()]))
