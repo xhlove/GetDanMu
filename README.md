@@ -22,7 +22,7 @@
 > 提示逻辑有待完善
 
 # 效果示意（字幕与视频不相关）
-![potplayer截屏](http://puui.qpic.cn/vshpic/0/5TLOX3WbgjudEj61IxYZ4tAuf2lFwl-ynf4S5T4sXkdjS9cd_0/0)
+[potplayer截屏](http://puui.qpic.cn/vshpic/0/5TLOX3WbgjudEj61IxYZ4tAuf2lFwl-ynf4S5T4sXkdjS9cd_0/0)
 
 ## 可能存在的问题
 - 下载进度接近100%时暂时没有反应
