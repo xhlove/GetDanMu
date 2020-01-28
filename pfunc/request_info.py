@@ -3,7 +3,7 @@
 '''
 # 作者: weimo
 # 创建日期: 2020-01-04 19:14:43
-# 上次编辑时间       : 2020-01-21 12:36:47
+# 上次编辑时间       : 2020-01-28 18:38:32
 # 一个人的命运啊,当然要靠自我奋斗,但是...
 '''
 import re
@@ -113,7 +113,7 @@ def matchit(patterns, text):
             break
     return ret
 
-def duration_to_sec(duration):
+def duration_to_sec(duration: str):
     return sum(x * int(t) for x, t in zip([3600, 60, 1][2 - duration.count(":"):], duration.split(":")))
 
 def get_year_range(aid, locale="zh_cn"):

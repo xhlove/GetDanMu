@@ -11,6 +11,18 @@
 | **爱奇艺** | <https://www.iqiyi.com/>    |✓|✓|✓|
 | **优酷** | <https://v.youku.com/>    |✓|✓|✓|
 | **搜狐视频** | <https://tv.sohu.com/>    |✓|✓||
+| **芒果TV** | <https://www.mgtv.com/>    |✓|✓|✓|
+
+# 使用示例
+- 命令（建议）
+
+> GetDanMu.exe -u https://www.mgtv.com/b/334727/7452407.html
+
+- 双击运行
+> 提示逻辑有待完善
+
+# 效果示意（字幕与视频不相关）
+![potplayer截屏](http://puui.qpic.cn/vshpic/0/5TLOX3WbgjudEj61IxYZ4tAuf2lFwl-ynf4S5T4sXkdjS9cd_0/0)
 
 ## 可能存在的问题
 - 下载进度接近100%时暂时没有反应
@@ -21,6 +33,10 @@
 当前的逻辑并不完善，如果出现这种现象请反馈给我。
 
 # 更新日志
+
+## 2020/1/28
+- 增加芒果TV的支持（支持综艺合集、支持series命令）
+- 爱奇艺bug修复
 
 ## 2020/1/16
 - 增加搜狐视频的支持（剧集）
