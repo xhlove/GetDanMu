@@ -3,7 +3,7 @@
 '''
 # 作者: weimo
 # 创建日期: 2020-01-04 19:14:46
-# 上次编辑时间       : 2020-02-07 18:33:14
+# 上次编辑时间       : 2020-02-07 19:21:19
 # 一个人的命运啊,当然要靠自我奋斗,但是...
 '''
 
@@ -30,6 +30,7 @@ ass_events_head = """[Events]\nFormat: Layer, Start, End, Style, Name, MarginL, 
 # ass_baseline = """Dialogue: 0,0:20:08.00,0:20:28.00,Default,,0,0,0,,{\t(1000,3000,\move(1300,600,360,600))\pos(676.571,506.629)}这是字幕内容示意"""
 
 def get_fonts_info():
+    global fonts
     fonts_path = r"C:\Windows\Fonts"
     if os.path.exists("config.json"):
         with open("config.json", "r", encoding="utf-8") as f:

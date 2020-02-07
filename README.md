@@ -35,6 +35,19 @@
 >     -y或--y 覆盖原有弹幕而不提示 默认不使用
 
 
+- 字体配置文件（可选）
+新建名为`config.json`的文件，内容形式如下：
+```json
+{
+    "fonts_base_folder": "C:/Windows/Fonts",
+    "fonts": {
+        "微软雅黑":"msyh.ttc",
+        "微软雅黑粗体":"msyhbd.ttc",
+        "微软雅黑细体":"msyhl.ttc"
+    }
+}
+```
+
 # 效果示意（字幕与视频不相关）
 ![potplayer截屏](http://puui.qpic.cn/vshpic/0/5TLOX3WbgjudEj61IxYZ4tAuf2lFwl-ynf4S5T4sXkdjS9cd_0/0)
 [查看使用演示视频点我][2]
