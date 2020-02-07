@@ -3,7 +3,7 @@
 '''
 # 作者: weimo
 # 创建日期: 2020-01-04 19:14:47
-# 上次编辑时间: 2020-01-05 14:46:51
+# 上次编辑时间       : 2020-02-07 18:40:42
 # 一个人的命运啊,当然要靠自我奋斗,但是...
 '''
 
@@ -14,10 +14,10 @@ class SameHeight(object):
     '''
     # 等高弹幕 --> 矩形分割问题？
     '''
-    def __init__(self, text, font_path="msyh.ttc", font_size=14):
+    def __init__(self, text, ass_range: str, font_path="msyh.ttc", font_size=14):
         self.font = truetype(font=font_path, size=font_size)
         self.width, self.height = self.get_danmu_size(text)
-        self.height_range = [0, 720]
+        self.height_range = [int(n.strip()) for n in ass_range.split(",")]
         self.width_range = [0, 1920]
         self.lines_start_y = list(range(*(self.height_range + [self.height])))
         self.lines_width_used = [[y, 0] for y in self.lines_start_y]
@@ -49,7 +49,7 @@ class SameHeight(object):
 def main():
     text = "测试"
     show_time = 13
-    sh = SameHeight(text)
+    sh = SameHeight(text, "0,720")
     sh.get_xy(text, show_time)
     
 

@@ -3,7 +3,7 @@
 '''
 # 作者: weimo
 # 创建日期: 2020-01-04 19:14:43
-# 上次编辑时间       : 2020-01-28 18:38:32
+# 上次编辑时间       : 2020-02-07 17:36:24
 # 一个人的命运啊,当然要靠自我奋斗,但是...
 '''
 import re
@@ -134,7 +134,7 @@ def get_year_range(aid, locale="zh_cn"):
         year_end = int(data["latestVideo"]["period"][:4])
     return list(range(year_start, year_end + 1))
 
-def get_vinfo_by_tvid(tvid, locale="zh_cn"):
+def get_vinfo_by_tvid(tvid, locale="zh_cn", isall=False):
     api_url = "https://pcw-api.iqiyi.com/video/video/baseinfo/{}".format(tvid)
     if locale != "zh_cn":
         api_url += "?locale=" + locale
@@ -146,9 +146,32 @@ def get_vinfo_by_tvid(tvid, locale="zh_cn"):
     data = json.loads(r)["data"]
     if data.__class__ != dict:
         return None
+    if isall:
+        aid = data.get("albumId")
+        if aid is None:
+            print("通过单集tvid获取合集aid失败，将只下载单集的弹幕")
+        locale = check_video_area_by_tvid(tvid)
+        if locale is None:
+            locale = "zh_cn"
+        return get_vinfos(aid, locale=locale)
     name = data["name"]
     duration = data["durationSec"]
     return [[name + "_" + str(duration), duration, tvid]]
+
+def check_video_area_by_tvid(tvid):
+    api_url = "https://pcw-api.iqiyi.com/video/video/playervideoinfo?tvid={}".format(tvid)
+    try:
+        r = requests.get(api_url, headers=chrome, timeout=5).content.decode("utf-8")
+    except Exception as e:
+        print("check_video_area_by_tvid error info -->", e)
+        return None
+    data = json.loads(r)["data"]
+    intl_flag = data["operation_base"]["is_international"]
+    langs = [item["language"].lower() for item in data["operation_language_base"]]
+    locale = "zh_cn"
+    if intl_flag is False and "zh_tw" in langs:
+        locale = "zh_tw"
+    return locale
 
 def get_vinfos_by_year(aid, years: list, cid=6, locale="zh_cn"):
     api_url = "https://pcw-api.iqiyi.com/album/source/svlistinfo?cid={}&sourceid={}&timelist={}".format(cid, aid, ",".join([str(_) for _ in years.copy()]))
@@ -171,7 +194,7 @@ def get_vinfos_by_year(aid, years: list, cid=6, locale="zh_cn"):
             vinfos.append([ep["shortTitle"] + "_" + str(sec), sec, ep["tvId"]])
     return vinfos
 
-def get_vinfos_by_url(url):
+def get_vinfos_by_url(url, isall=False):
     locale = check_url_locale(url)
     patterns = [".+?/w_(\w+?).html", ".+?/v_(\w+?).html", ".+?/a_(\w+?).html", ".+?/lib/m_(\w+?).html"]
     isw, isep, isas, isms = [re.match(pattern, url) for pattern in patterns]
@@ -204,7 +227,7 @@ def get_vinfos_by_url(url):
     if isep or isw:
         if tvid is None:
             return
-        return get_vinfo_by_tvid(tvid, locale=locale)
+        return get_vinfo_by_tvid(tvid, locale=locale, isall=isall)
 
     if isas or isms:
         if aid is None:

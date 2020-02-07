@@ -3,7 +3,7 @@
 '''
 # 作者: weimo
 # 创建日期: 2020-01-28 15:55:22
-# 上次编辑时间       : 2020-01-28 19:57:57
+# 上次编辑时间       : 2020-02-07 18:32:05
 # 一个人的命运啊,当然要靠自我奋斗,但是...
 '''
 import re
@@ -155,7 +155,6 @@ def get_vinfos_by_url(url: str, isall: bool):
             if vinfo is None:
                 return
             vinfos.append(vinfo)
-    print("ccc", cid_v1)
     if cid_v1 or cid_v2:
         if cid_v2 is None:
             cid = cid_v1.group(1)

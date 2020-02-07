@@ -3,7 +3,7 @@
 '''
 # 作者: weimo
 # 创建日期: 2020-01-04 19:17:44
-# 上次编辑时间       : 2020-01-16 20:06:23
+# 上次编辑时间       : 2020-02-07 18:17:48
 # 一个人的命运啊,当然要靠自我奋斗,但是...
 '''
 import os
@@ -17,7 +17,7 @@ def write_one_video_subtitles(file_path, comments, args):
     # 对于合集则每次都都得检查一次 也可以放在上一级 放在这里 考虑后面可能特殊指定字体的情况
     font_path, font_style_name = check_font(args.font)
     ass_head = get_ass_head(font_style_name, args.font_size)
-    get_xy_obj = SameHeight("那就写这一句作为初始化测试吧！", font_path=font_path, font_size=int(args.font_size))
+    get_xy_obj = SameHeight("那就写这一句作为初始化测试吧！", args.range, font_path=font_path, font_size=int(args.font_size))
     subtitle = ASS(file_path, get_xy_obj, font=font_style_name)
     comments = remove_same_danmu(comments)
     for comment in comments:

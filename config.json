@@ -1,0 +1,8 @@
+{
+    "fonts_base_folder": "C:/Windows/Fonts",
+    "fonts": {
+        "微软雅黑":"msyh.ttc",
+        "微软雅黑粗体":"msyhbd.ttc",
+        "微软雅黑细体":"msyhl.ttc"
+    }
+}

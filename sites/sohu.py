@@ -3,7 +3,7 @@
 '''
 # 作者: weimo
 # 创建日期: 2020-01-16 17:45:35
-# 上次编辑时间       : 2020-01-16 20:09:22
+# 上次编辑时间       : 2020-02-07 18:43:55
 # 一个人的命运啊,当然要靠自我奋斗,但是...
 '''
 import json
@@ -99,7 +99,7 @@ def get_vinfos(aid: str):
     try:
         r = requests.get(api_url, params=params, headers=chrome, timeout=3).content.decode("gbk")
     except Exception as e:
-        print("get sohu (vid -> {}) videolist failed.".format(vid))
+        print("get sohu (aid -> {}) videolist failed.".format(aid))
         return None
     data = json.loads(r)
     if data.get("videos"):

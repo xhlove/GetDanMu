@@ -3,7 +3,7 @@
 '''
 # 作者: weimo
 # 创建日期: 2020-01-04 19:14:41
-# 上次编辑时间       : 2020-01-16 19:58:51
+# 上次编辑时间       : 2020-02-07 17:32:10
 # 一个人的命运啊,当然要靠自我奋斗,但是...
 '''
 
@@ -66,8 +66,11 @@ def get_danmu_by_tvid(name, duration, tvid):
 
 def main(args):
     vinfos = []
+    isall = False
+    if args.series:
+        isall = True
     if args.tvid:
-        vi = get_vinfo_by_tvid(args.tvid)
+        vi = get_vinfo_by_tvid(args.tvid, isall=isall)
         if vi:
             vinfos.append(vi)
     if args.aid:
@@ -77,7 +80,7 @@ def main(args):
     if args.tvid == "" and args.aid == "" and args.url == "":
         args.url = input("请输入iqiyi链接：\n")
     if args.url:
-        vi = get_vinfos_by_url(args.url)
+        vi = get_vinfos_by_url(args.url, isall=isall)
         if vi:
             vinfos += vi
     subtitles = {}
