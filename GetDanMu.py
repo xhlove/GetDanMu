@@ -3,7 +3,7 @@
 '''
 # 作者: weimo
 # 创建日期: 2020-01-04 19:14:39
-# 上次编辑时间       : 2020-02-07 18:23:18
+# 上次编辑时间       : 2020-02-07 19:10:02
 # 一个人的命运啊,当然要靠自我奋斗,但是...
 '''
 
@@ -34,7 +34,7 @@ def main():
     parser = ArgumentParser(description="视频网站弹幕转换/下载工具，项目地址https://github.com/xhlove/GetDanMu，任何问题请联系vvtoolbox.dev@gmail.com")
     parser.add_argument("-f", "--font", default="微软雅黑", help="指定输出字幕字体")
     parser.add_argument("-fs", "--font-size", default=28, help="指定输出字幕字体大小")
-    parser.add_argument("-s", "--site", default="", help=f"使用非url方式下载需指定网站 支持的网站 -> {ALLOW_SITES}")
+    parser.add_argument("-s", "--site", default="", help=f"使用非url方式下载需指定网站 支持的网站 -> {' '.join(ALLOW_SITES)}")
     parser.add_argument("-r", "--range", default="0,720", help="指定弹幕的纵向范围 默认0到720 请用逗号隔开")
     parser.add_argument("-cid", "--cid", default="", help="下载cid对应视频的弹幕（腾讯 芒果视频合集）")
     parser.add_argument("-vid", "--vid", default="", help="下载vid对应视频的弹幕，支持同时多个vid，需要用逗号隔开")

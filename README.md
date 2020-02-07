@@ -24,7 +24,7 @@
 - 选项说明
 >     -f或--font 指定输出字幕字体，默认微软雅黑)
 >     -fs或--font-size 指定输出字幕字体大小，默认28)
->     -s或--site 使用非url方式下载需指定网站 支持的网站 -> ["qq", "iqiyi", "youku", "sohu", "mgtv"]
+>     -s或--site 使用非url方式下载需指定网站 支持的网站 -> qq iqiyi youku sohu mgtv
 >     -r或--range 指定弹幕的纵向范围 默认0到720，请用逗号隔开
 >     -cid或--cid 下载cid对应视频的弹幕（腾讯 芒果视频合集）
 >     -vid或--vid 下载vid对应视频的弹幕，支持同时多个vid，需要用逗号隔开
