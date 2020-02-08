@@ -3,7 +3,7 @@
 '''
 # 作者: weimo
 # 创建日期: 2020-01-04 19:14:43
-# 上次编辑时间       : 2020-02-07 17:36:24
+# 上次编辑时间       : 2020-02-08 21:37:26
 # 一个人的命运啊,当然要靠自我奋斗,但是...
 '''
 import re
@@ -101,7 +101,7 @@ def get_vinfos(aid, locale="zh_cn"):
     except Exception as e:
         print("get_vinfos load vlist error info -->", e)
         return None
-    vinfos = [[v["shortTitle"] + "_" + str(v["timeLength"]), v["timeLength"], ["id"]] for v in vlist]
+    vinfos = [[v["shortTitle"] + "_" + str(v["timeLength"]), v["timeLength"], v["id"]] for v in vlist]
     return vinfos
 
 def matchit(patterns, text):
